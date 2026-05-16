@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Діагностика технічного стану — ДБЖ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔧 Реєстр діагностики технічного стану</h1>
+      <p>Система обліку результатів технічного обстеження обладнання ДБЖ</p>
+    </header>
+
+    <!-- Статистика -->
+    <section class="stats-bar" aria-label="Статистика">
+      <div class="stat-card">
+        <span class="stat-num" id="statTotal">0</span>
+        <span class="stat-label">Всього записів</span>
+      </div>
+      <div class="stat-card ok">
+        <span class="stat-num" id="statOk">0</span>
+        <span class="stat-label">Норма</span>
+      </div>
+      <div class="stat-card warning">
+        <span class="stat-num" id="statWarning">0</span>
+        <span class="stat-label">Увага</span>
+      </div>
+      <div class="stat-card critical">
+        <span class="stat-num" id="statCritical">0</span>
+        <span class="stat-label">Критично</span>
+      </div>
+    </section>
+
+    <main class="main-grid">
+      <!-- Форма -->
+      <section class="card form-section">
+        <h2>Новий запис діагностики</h2>
+
+        <form id="diagForm" novalidate>
+
+          <div class="form-group">
+            <label for="equipmentType">Тип обладнання *</label>
+            <select id="equipmentType" name="equipmentType" required>
+              <option value="">— Оберіть тип —</option>
+              <option value="ups_online">ДБЖ онлайн (On-line UPS)</option>
+              <option value="ups_line">ДБЖ лінійно-інтерактивний</option>
+              <option value="battery">Акумуляторна батарея</option>
+              <option value="inverter">Інвертор</option>
+              <option value="rectifier">Випрямляч</option>
+              <option value="bypass">Модуль байпасу</option>
+            </select>
+            <span class="err" id="err-equipmentType"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="serialNumber">Серійний / інвентарний номер *</label>
+              <input type="text" id="serialNumber" name="serialNumber"
+                     required placeholder="UPS-2024-001" />
+              <span class="err" id="err-serialNumber"></span>
+            </div>
+            <div class="form-group">
+              <label for="diagnosticDate">Дата діагностики *</label>
+              <input type="date" id="diagnosticDate" name="diagnosticDate" required />
+              <span class="err" id="err-diagnosticDate"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="substationName">Підстанція / об'єкт *</label>
+            <input type="text" id="substationName" name="substationName"
+                   required placeholder="ПС-110/10 кВ «Північна»" />
+            <span class="err" id="err-substationName"></span>
+          </div>
+
+          <div class="form-group">
+            <label>Результати діагностики *</label>
+            <div class="radio-group">
+              <label class="radio-label ok">
+                <input type="radio" name="result" value="ok" required />
+                ✅ Норма
+              </label>
+              <label class="radio-label warning">
+                <input type="radio" name="result" value="warning" />
+                ⚠️ Увага
+              </label>
+              <label class="radio-label critical">
+                <input type="radio" name="result" value="critical" />
+                🔴 Критично
+              </label>
+            </div>
+            <span class="err" id="err-result"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Примітки / опис несправностей</label>
+            <textarea id="notes" name="notes" rows="3"
+                      placeholder="Наприклад: виявлено зниження ємності батареї до 60%…"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Зберегти</button>
+            <button type="reset"  class="btn btn-secondary">🗑 Очистити</button>
+          </div>
+        </form>
+
+        <div id="message" class="message" role="alert" aria-live="polite"></div>
+      </section>
+
+      <!-- Журнал -->
+      <section class="card list-section">
+        <div class="list-header">
+          <h2>Журнал діагностики</h2>
+          <div class="filter-row">
+            <select id="filterResult">
+              <option value="">Всі результати</option>
+              <option value="ok">Норма</option>
+              <option value="warning">Увага</option>
+              <option value="critical">Критично</option>
+            </select>
+          </div>
+        </div>
+        <div id="recordsList"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
